@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task, Project, Habbit
+from .models import Task, Project, Habbit, Dailies
 
 
 class ProjectSerializers(serializers.ModelSerializer):
@@ -15,4 +15,9 @@ class TaskSerializers(serializers.ModelSerializer):
 class HabbitSerializers(TaskSerializers):
     class Meta:
         model = Habbit
+        fields = '__all__'
+
+class DailiesSerializers(TaskSerializers):
+    class Meta:
+        model = Dailies
         fields = '__all__'

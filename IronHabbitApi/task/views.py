@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import ListCreateAPIView
 
 from .models import Task, Project
-from .serializers import TaskSerializers, ProjectSerializers, HabbitSerializers
+from .serializers import TaskSerializers, ProjectSerializers, HabbitSerializers, DailiesSerializers
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -47,6 +47,16 @@ class HabbitViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Habbit.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class DailiesViewSet(viewsets.ModelViewSet):
+
+    serializer_class = DailiesSerializers
+
+    def get_queryset(self):
+        return Dailies.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

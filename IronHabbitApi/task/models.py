@@ -58,7 +58,10 @@ class Habbit(Task):
     positive_streak = models.IntegerField()
     negative_streak = models.IntegerField()
 
+class Dailies(Task):
+    pass
 
-# class Dailies(Task):
-#     done = ListField()
-#     not_done = ListField()
+class DailiesDoneList(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    state = models.BooleanField()
+    dailies = models.ForeignKey(Dailies, on_delete=models.CASCADE)
