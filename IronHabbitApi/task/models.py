@@ -22,6 +22,9 @@ class Project(models.Model):
     status = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class Task(models.Model):
     name = models.CharField(max_length=255)
@@ -48,6 +51,9 @@ class Task(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(4)]
     )
     experience = models.IntegerField()
+    
+    def __str__(self):
+        return "%s %s" % (self.project, self.name)
 
 class Habbit(Task):
     reset = models.IntegerField(
