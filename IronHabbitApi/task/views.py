@@ -15,6 +15,7 @@ from django.forms.models import model_to_dict
 
 from django.core.serializers.json import DjangoJSONEncoder
 
+
 class ProjectViewSet(viewsets.ModelViewSet):
 
     serializer_class = ProjectSerializers
@@ -38,6 +39,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         except:
             return Response({"message": "can not find user project"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TaskViewSet(viewsets.ModelViewSet):
 
     serializer_class = TaskSerializers
@@ -48,6 +50,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 class HabbitViewSet(viewsets.ModelViewSet):
 
     serializer_class = HabbitSerializers
@@ -57,6 +60,7 @@ class HabbitViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class DailiesViewSet(viewsets.ModelViewSet):
 
@@ -70,7 +74,11 @@ class DailiesViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['GET'])
     def get_dailies_with_done(self, request):
-        user_dailies = Dailies.objects.filter(user=self.request.user)
+        try:
+            user_dailies = Dailies.objects.filter(user=self.request.user)
+        except TypeError:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         out = []
 
         for dailie in user_dailies:
@@ -84,5 +92,8 @@ class DailiesViewSet(viewsets.ModelViewSet):
 
             out.append(dailie_with_done_list)
 
-        data = json.dumps(out, indent=1, cls=DjangoJSONEncoder)
-        return Response(data, status=status.HTTP_200_OK)
+        data = json.dumps(out,
+                          sort_keys=True,
+                          indent=1,
+                          cls=DjangoJSONEncoder)
+        return Response(data.replace('\n', ''), status=status.HTTP_200_OK)
