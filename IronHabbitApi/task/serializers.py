@@ -17,12 +17,15 @@ class HabbitSerializers(TaskSerializers):
         model = Habbit
         fields = '__all__'
 
-class DailiesSerializers(TaskSerializers):
-    class Meta:
-        model = Dailies
-        fields = '__all__'
 
 class DailiesDoneListSerializers(serializers.ModelSerializer):
     class Meta:
         model = DailiesDoneList
         fields = '__all__'
+
+class DailiesSerializers(TaskSerializers):
+    done_list = DailiesDoneListSerializers(required=False, many=True)
+    class Meta:
+        model = Dailies
+        fields = '__all__'
+        # fields = ('id', 'name', 'done_list', )

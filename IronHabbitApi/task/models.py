@@ -1,5 +1,5 @@
 
-from enum import Enum  
+from enum import Enum
 
 from django.db import models
 # from django.db.models import
@@ -51,7 +51,7 @@ class Task(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(4)]
     )
     experience = models.IntegerField()
-    
+
     def __str__(self):
         return "%s %s" % (self.project, self.name)
 
@@ -65,7 +65,7 @@ class Habbit(Task):
     negative_streak = models.IntegerField()
 
 class Dailies(Task):
-    pass
+    done_list = None
 
 class DailiesDoneList(models.Model):
     date = models.DateTimeField(auto_now_add=True)
